@@ -1,10 +1,8 @@
-import "server-only";
+import { PlayerBasicInfo, Side } from "../model";
+import { sideToLogFormat } from "./mappers";
+import { parseHardcodedFileToObjectList } from "./parseHardcodedFileToObjectList";
 
-import { Side } from "@/shared/model";
-import { Player } from "../types";
-import { parseHardcodedFileToObjectList, sideToLogFormat } from "@/shared/match-data-file-parser";
-
-export function parsePlayersFromSide(side: Side): Player[] {
+export function parsePlayersFromSide(side: Side): PlayerBasicInfo[] {
     const dataRaw = parseHardcodedFileToObjectList();
     const sideTag = sideToLogFormat(side);
     const playerNames = new Set<string>();
@@ -22,6 +20,7 @@ export function parsePlayersFromSide(side: Side): Player[] {
 
     return Array.from(playerNames).map(name => ({ name }));
 }
+
 
 export function parseTeamNameForSide(side: Side): string {
     const dataRaw = parseHardcodedFileToObjectList();

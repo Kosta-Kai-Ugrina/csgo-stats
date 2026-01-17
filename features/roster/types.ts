@@ -1,8 +1,6 @@
-export interface Player {
-    name: string;
-}
+import { PlayerBasicInfo } from "@/shared/model";
 
 export interface Team {
     name: string;
-    players: Player[];
+    players: PlayerBasicInfo[];
 }

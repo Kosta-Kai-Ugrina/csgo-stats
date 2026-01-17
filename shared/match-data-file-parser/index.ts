@@ -1,3 +1,4 @@
 export * from "./types";
-export * from "./fileToObjectList";
+export * from "./parseHardcodedFileToObjectList";
 export * from "./mappers";
+export * from "./parsers";
