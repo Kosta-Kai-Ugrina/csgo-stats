@@ -1,0 +1,1 @@
+export type Side = "terrorist" | "counter-terrorist";
