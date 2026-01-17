@@ -36,6 +36,6 @@ function parseLineToMatchEvent(line: string): MatchEventRaw {
 
     return {
         timestamp: timestamp,
-        data: data,
+        data: data.trim(),
     };
 }
