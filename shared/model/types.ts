@@ -1,4 +1,4 @@
-export type Side = "terrorist" | "counter-terrorist";
+export type Team = "first" | "second";
 
 export interface PlayerBasicInfo {
     name: string;

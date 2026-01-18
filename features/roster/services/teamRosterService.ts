@@ -1,12 +1,12 @@
 import "server-only";
 
-import { Side } from "@/shared/model";
-import { Team } from "../types";
-import { parsePlayersFromSide, parseTeamNameForSide } from "@/shared/match-data-file-parser";
+import { Team } from "@/shared/model";
+import { Team as TeamType } from "../types";
+import { parsePlayersFromTeam, parseTeamNameForTeam } from "@/shared/match-data-file-parser";
 
-export function getTeamRoster(side: Side): Team {
-    const teamName = parseTeamNameForSide(side);
-    const players = parsePlayersFromSide(side);
+export function getTeamRoster(team: Team): TeamType {
+    const teamName = parseTeamNameForTeam(team);
+    const players = parsePlayersFromTeam(team);
 
     return {
         name: teamName,
