@@ -24,7 +24,13 @@ const MatchStatsTable: FC<Props> = ({ teamStats, damageLabel = "ADR", className,
         <tr className="text-white/60 text-xs font-medium">
           <th className="text-left px-2 py-2">
             <div className="flex items-center gap-2">
-              <div className="w-5 h-5 bg-amber-500 rounded-sm" />
+              <Image
+                src={`/team-logos/${teamStats.name}.png`}
+                alt={teamStats.name}
+                width={20}
+                height={20}
+                className="object-contain"
+              />
               <span className="font-bold text-white">{teamStats.name}</span>
             </div>
           </th>

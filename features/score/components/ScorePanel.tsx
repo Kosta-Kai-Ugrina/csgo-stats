@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { TeamFinalScore } from "../types";
@@ -17,8 +18,15 @@ export async function ScorePanel({ firstTeamScore, secondTeamScore, className, .
       )}
       {...divProps}
     >
-      <div className={twMerge("flex-1 flex items-center justify-center rounded-r-sm", firstTeamScore.score > secondTeamScore.score ? "bg-green-500/20" : "bg-red-500/20")}>
+      <div className={twMerge("flex-1 flex pr-2 md:pr-8 items-center justify-end gap-2 rounded-r-sm", firstTeamScore.score > secondTeamScore.score ? "bg-green-500/10" : "bg-red-500/10")}>
         <span className="text-sm md:text-lg font-semibold text-white">{firstTeamScore.name}</span>
+        <Image
+          src={`/team-logos/${firstTeamScore.name}.png`}
+          alt={firstTeamScore.name}
+          width={32}
+          height={32}
+          className="object-contain"
+        />
       </div>
 
       <div className={twMerge("w-10 md:w-16 flex items-center justify-center rounded bg-white/5", firstTeamScore.score > secondTeamScore.score ? "text-green-500" : "text-red-500")}>
@@ -33,7 +41,14 @@ export async function ScorePanel({ firstTeamScore, secondTeamScore, className, .
         <span className="text-2xl md:text-4xl font-bold">{secondTeamScore.score}</span>
       </div>
 
-      <div className={twMerge("flex-1 flex items-center justify-center rounded-l-sm", secondTeamScore.score > firstTeamScore.score ? "bg-green-500/20" : "bg-red-500/20")}>
+      <div className={twMerge("flex-1 flex pl-2 md:pl-8 items-center justify-start gap-2 rounded-l-sm", secondTeamScore.score > firstTeamScore.score ? "bg-green-500/10" : "bg-red-500/10")}>
+        <Image
+          src={`/team-logos/${secondTeamScore.name}.png`}
+          alt={secondTeamScore.name}
+          width={32}
+          height={32}
+          className="object-contain"
+        />
         <span className="text-sm md:text-lg font-semibold text-white">{secondTeamScore.name}</span>
       </div>
     </div>

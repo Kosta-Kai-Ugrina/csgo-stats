@@ -1,7 +1,6 @@
 # csgo-stats
 
-Tiny web app that shows stats for a pre-recorded game between Na'Vi and
-Vitality.
+Tiny web app that shows stats for a pre-recorded game between NaVi and Vitality.
 
 Everything in this app uses data from `NAVIvsVitaGF-Nuke.txt`
 

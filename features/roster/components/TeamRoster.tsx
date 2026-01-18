@@ -11,7 +11,16 @@ type Props = {
 const TeamRoster: FC<Props> = ({ teamInfo, className, ...divProps }) => {
   return (
     <div className={twMerge("", className)} {...divProps}>
-      <h2 className="text-white text-sm font-bold mb-2">{teamInfo.name}</h2>
+      <h2 className="text-white text-sm font-bold mb-2 flex items-center gap-2">
+        <Image
+          src={`/team-logos/${teamInfo.name}.png`}
+          alt={teamInfo.name}
+          width={20}
+          height={20}
+          className="object-contain"
+        />
+        {teamInfo.name}
+      </h2>
       <div className="flex gap-2">
         {teamInfo.players.map((player) => {
           const flagPath = getFlagPath(player.countryCode);
