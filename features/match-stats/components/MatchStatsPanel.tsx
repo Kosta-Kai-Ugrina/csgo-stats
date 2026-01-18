@@ -1,21 +1,21 @@
 "use client";
 
-import { FC, HTMLAttributes, useState } from "react";
+import { FC, HTMLAttributes, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
-import { RoundStats, TeamMatchStats } from "../types";
+import { PlayerStats, RoundStats, TeamMatchStats } from "../types";
 import { FlexColumn, FlexRow } from "@/shared/components/layout";
 import MatchStatsTable from "./MatchStatsTable";
 
 type Props = {
-  matchStats: [TeamMatchStats, TeamMatchStats];
   roundStats: RoundStats[];
+  fullMatchStats: [TeamMatchStats, TeamMatchStats];
 } & HTMLAttributes<HTMLDivElement>;
 
-const MatchStatsPanel: FC<Props> = ({ matchStats, roundStats, className, ...divProps }) => {
+const MatchStatsPanel: FC<Props> = ({ fullMatchStats, roundStats, className, ...divProps }) => {
   const [view, setView] = useState<"match" | "round">("match");
   const [selectedRoundIndex, setSelectedRoundIndex] = useState(0);
+  const [firstTeamMatchStats, secondTeamMatchStats] = fullMatchStats;
 
-  const [firstTeamMatchStats, secondTeamMatchStats] = matchStats;
   const currentRound = roundStats[selectedRoundIndex];
 
   const isRoundView = view === "round";

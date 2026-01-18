@@ -1,31 +1,23 @@
 import { PlayerBasicInfo, Side } from "@/shared/model";
 
-export interface PlayerMatchStats extends PlayerBasicInfo {
+export interface PlayerStats extends PlayerBasicInfo {
     kills: number;
     deaths: number;
     kdDiff: number;
-    avgDmgPerRound: number;
+    damage: number;
     headshotPercentage: number;
 }
 
 export interface TeamMatchStats {
     name: string;
-    players: PlayerMatchStats[];
-}
-
-export interface PlayerRoundStats extends PlayerBasicInfo {
-    kills: number;
-    deaths: number;
-    kdDiff: number;
-    avgDmgPerRound: number;
-    headshotPercentage: number;
+    players: PlayerStats[];
 }
 
 export interface TeamRoundStats {
     name: string;
     hasWon: boolean;
     side: Side;
-    players: PlayerRoundStats[];
+    players: PlayerStats[];
 }
 
 export interface RoundStats {

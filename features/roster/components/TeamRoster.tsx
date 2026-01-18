@@ -1,10 +1,10 @@
 import Image from "next/image";
-import { Team } from "../types";
+import { TeamRoster as TeamRosterType } from "../types";
 import { FC, HTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 
 type Props = {
-  teamInfo: Team;
+  teamInfo: TeamRosterType;
 } & HTMLAttributes<HTMLDivElement>;
 
 const TeamRoster: FC<Props> = ({ teamInfo, className, ...divProps }) => {

@@ -1,10 +1,15 @@
 import Image from "next/image";
 import { FC, TableHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
-import { TeamMatchStats } from "../types";
+import { PlayerStats } from "../types";
+
+type TeamStats = {
+  name: string;
+  players: PlayerStats[];
+};
 
 type Props = {
-  teamStats: TeamMatchStats;
+  teamStats: TeamStats;
 } & TableHTMLAttributes<HTMLTableElement>;
 
 const MatchStatsTable: FC<Props> = ({ teamStats, className, ...tableProps }) => {
@@ -57,7 +62,7 @@ const MatchStatsTable: FC<Props> = ({ teamStats, className, ...tableProps }) => 
             >
               {player.kdDiff > 0 ? `+${player.kdDiff}` : player.kdDiff}
             </td>
-            <td className="text-center px-2 py-1.5">{player.avgDmgPerRound}</td>
+            <td className="text-center px-2 py-1.5">{player.damage}</td>
             <td className="text-center px-2 py-1.5">{player.headshotPercentage}%</td>
           </tr>
         ))}

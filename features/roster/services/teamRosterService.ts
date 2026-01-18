@@ -1,9 +1,9 @@
 import "server-only";
 
-import { Team } from "../types";
+import { TeamRoster } from "../types";
 import { parsePlayersFromBothTeams, parseTeamNames } from "@/shared/match-data-file-parser";
 
-export function getTeamRosters(): [Team, Team] {
+export function getTeamRosters(): [TeamRoster, TeamRoster] {
     const [firstTeamName, secondTeamName] = parseTeamNames();
     const [firstTeamPlayers, secondTeamPlayers] = parsePlayersFromBothTeams();
 
