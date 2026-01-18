@@ -1,6 +1,5 @@
+import { Side } from "../model";
 import { parseHardcodedFileToObjectList } from "./parseHardcodedFileToObjectList";
-
-type Side = "CT" | "TERRORIST";
 
 export function getSideTagsForBothTeams(): [Side, Side] {
   const dataRaw = parseHardcodedFileToObjectList();

@@ -1,11 +1,15 @@
-import { MatchStatsTable, parseMatchStats } from "@/features/match-stats";
+import { MatchStatsTable, getMatchStats, getMatchStatsPerRound } from "@/features/match-stats";
+import RoundStatsList from "@/features/match-stats/components/RoundStatsList";
 import { getTeamRosters, TeamRoster } from "@/features/roster";
 import { getFinalScore, ScorePanel } from "@/features/score";
+import { FlexRow } from "@/shared/components/layout";
+import { FlexColumn } from "@/shared/components/layout";
 
 export default function Home() {
   const [firstTeam, secondTeam] = getTeamRosters();
-  const [firstTeamMatchStats, secondTeamMatchStats] = parseMatchStats();
+  const [firstTeamMatchStats, secondTeamMatchStats] = getMatchStats();
   const [firstTeamScore, secondTeamScore] = getFinalScore();
+  const matchStatsPerRound = getMatchStatsPerRound();
 
 
   return (
@@ -21,9 +25,20 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col w-full md:flex-row gap-4 justify-between">
-            <MatchStatsTable teamStats={firstTeamMatchStats} />
-            <MatchStatsTable teamStats={secondTeamMatchStats} />
+
           </div>
+
+          <FlexColumn className="text-white text-sm border-collapse border-[0.5px] border-white/10 px-4 py-2 rounded-sm">
+            <h2 className="text-white text-lg font-bold">Match Stats</h2>
+
+            <FlexRow className="w-full justify-between">
+              <MatchStatsTable teamStats={firstTeamMatchStats} />
+              <MatchStatsTable teamStats={secondTeamMatchStats} />
+            </FlexRow>
+          </FlexColumn>
+
+          <RoundStatsList roundStats={matchStatsPerRound} />
+
         </div>
 
       </main>
