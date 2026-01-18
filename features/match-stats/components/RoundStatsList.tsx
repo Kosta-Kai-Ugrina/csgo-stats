@@ -16,18 +16,16 @@ const RoundStatsList: FC<Props> = ({ roundStats, className, ...tableProps }) => 
 
 
   return (
-    <FlexColumn className={twMerge("text-white text-sm border-collapse border-[0.5px] border-white/10 px-4 py-2 rounded-sm", className)} {...tableProps}>
-      <h2 className="text-white text-lg font-bold">Stats Per Round</h2>
-      <span className="text-white/60 text-xs font-medium">Round {roundNumber}</span>
+    <FlexColumn className={twMerge("text-white text-sm", className)} {...tableProps}>
 
       <FlexRow className="w-full justify-between">
         <MatchStatsTable teamStats={firstTeamStats} />
         <MatchStatsTable teamStats={secondTeamStats} />
       </FlexRow>
 
-      <FlexRow>
-        <button onClick={() => setSelectedRoundNumber(selectedRoundNumber - 1)}>Previous Round</button>
-        <button onClick={() => setSelectedRoundNumber(selectedRoundNumber + 1)}>Next Round</button>
+      <FlexRow className="w-full justify-end gap-2 mt-2">
+        <button className="text-white/60 text-center bg-white/5 h-6 w-6 text-xs font-medium hover:bg-white/10 transition-colors rounded-sm p-1" onClick={() => setSelectedRoundNumber(selectedRoundNumber - 1)}>&lt;</button>
+        <button className="text-white/60 text-center bg-white/5 h-6 w-6 text-xs font-medium hover:bg-white/10 transition-colors rounded-sm p-1" onClick={() => setSelectedRoundNumber(selectedRoundNumber + 1)}>&gt;</button>
       </FlexRow>
     </FlexColumn>
   )
