@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# csgo-stats
 
-## Getting Started
+Tiny web app that shows stats for a pre-recorded game between Na'Vi and
+Vitality.
 
-First, run the development server:
+Everything in this app uses data from `NAVIvsVitaGF-Nuke.txt`
+
+## Selling points I'm happy about
+
+### Vertically sliced app
+
+app/ talks to features/ and shared/, and features/ talk to shared/ and never
+with other features in the folder. This increases separation of concerns and
+makes handling any feature easier because it is, by rule, not coupled in any way
+to the other features.
+
+You as a developer only need to know the code of that feature and what it uses
+from the shared/ folder, which is also segregated by folder as much as possible.
+
+### SSR goodness
+
+Much of the app's components are server-side rendered (SSR) to show the power of
+Next.js server-side (server-only) functionality.
+
+This enables the developer to write normal TS functions without having to wrap
+everything behind a route, which is good because HTTP routes/API endpoints are
+harder to read and bring no upside (except that they're the only way to get
+something from the server if the component is client-side)
+
+### Components act like normal DOM elements
+
+all components extend suitable HTML attributes, so the developer looking to
+modify styles never had to enter the component to be manipulated, but only its
+parent container, which is usually in app/page.tsx. No need to mentally handle
+10 files in your head for styling; only one.
+
+## Running the app locally
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+You'll need to add a .env file in the project root and add a STEAM_API_KEY for
+this app to work.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Here's one on the house to ease your pain:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+STEAM_API_KEY=169EA6BB8E3CE4C9C28125535204E23A
 
-## Learn More
+(I know this is crazy unsafe. I'll remove it later.)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the
+result.
