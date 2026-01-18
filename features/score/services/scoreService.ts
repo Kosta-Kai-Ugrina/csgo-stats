@@ -1,6 +1,8 @@
 import "server-only";
 
-export function getFinalScore(): [number, number] {
+import { TeamFinalScore } from "../types";
+import { parseFinalScore } from "./scoreParser";
 
-    return [0, 0];
+export function getFinalScore(): [TeamFinalScore, TeamFinalScore] {
+    return parseFinalScore();
 }

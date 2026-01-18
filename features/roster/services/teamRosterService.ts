@@ -13,4 +13,3 @@ export function getTeamRoster(team: Team): TeamType {
         players: players,
     }
 };
-
