@@ -54,7 +54,7 @@ const MatchStatsPanel: FC<Props> = ({ fullMatchStats, roundStats, className, ...
 
       {isRoundView ? (
         <>
-          <FlexRow className="w-full justify-between">
+          <FlexRow className="w-full flex-col md:flex-row justify-between gap-4">
             <MatchStatsTable teamStats={currentRound.firstTeamStats} />
             <MatchStatsTable teamStats={currentRound.secondTeamStats} />
           </FlexRow>
@@ -80,7 +80,7 @@ const MatchStatsPanel: FC<Props> = ({ fullMatchStats, roundStats, className, ...
           </FlexRow>
         </>
       ) : (
-        <FlexRow className="w-full justify-between">
+        <FlexRow className="w-full flex-col md:flex-row justify-between gap-4">
           <MatchStatsTable teamStats={firstTeamMatchStats} />
           <MatchStatsTable teamStats={secondTeamMatchStats} />
         </FlexRow>

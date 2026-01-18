@@ -9,8 +9,8 @@ type Props = {
 
 const TeamRoster: FC<Props> = ({ teamInfo, className, ...divProps }) => {
   return (
-    <div className={twMerge("p-3", className)} {...divProps}>
-      <h2 className="text-white text-sm font-bold mb-2">{teamInfo.name} Roster</h2>
+    <div className={twMerge("", className)} {...divProps}>
+      <h2 className="text-white text-sm font-bold mb-2">{teamInfo.name}</h2>
       <div className="flex gap-2">
         {teamInfo.players.map((player) => (
           <div key={player.name} className="flex flex-col items-center text-center group cursor-pointer p-2 rounded-xs bg-white/5 hover:bg-white/20 transition-colors duration-300">
