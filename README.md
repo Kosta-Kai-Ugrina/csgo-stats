@@ -41,8 +41,8 @@ npm i
 npm run dev
 ```
 
-You'll need to add a .env file in the project root and add a STEAM_API_KEY for
-this app to work.
+**!!!** You'll need to add a .env file in the project root and add a
+STEAM_API_KEY for this app to work. Sorry.
 
 Here's one on the house to ease your pain:
 

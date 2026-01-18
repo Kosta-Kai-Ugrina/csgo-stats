@@ -46,7 +46,7 @@ const MatchStatsTable: FC<Props> = ({ teamStats, damageLabel = "ADR", className,
                     <div className="w-1 h-7 bg-amber-500 rounded-sm" />
                     <div className="w-8 h-8 relative shrink-0">
                       <Image
-                        src="/player.png"
+                        src={`/player-img/${player.name}.png`}
                         alt={player.name}
                         fill
                         className="rounded-full object-cover"

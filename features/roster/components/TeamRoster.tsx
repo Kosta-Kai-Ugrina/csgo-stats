@@ -24,7 +24,7 @@ const TeamRoster: FC<Props> = ({ teamInfo, className, ...divProps }) => {
 
               <div className="w-12 h-12 mb-1 relative">
                 <Image
-                  src={"/player.png"}
+                  src={`/player-img/${player.name}.png`}
                   alt={player.name}
                   fill
                   className="rounded-full object-cover"

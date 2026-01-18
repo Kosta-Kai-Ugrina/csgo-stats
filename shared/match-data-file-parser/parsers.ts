@@ -13,10 +13,11 @@ export function parsePlayersFromBothTeams(): [PlayerBasicInfo[], PlayerBasicInfo
         const playerMatch = event.data.match(/^"([^<"]+)<[^>]+><([^>]+)><([^>]+)>/);
         if (playerMatch) {
             const [, playerName, steamId, side] = playerMatch;
-            if (side === firstTeamSide && firstTeamPlayers.size < 5 && !firstTeamPlayers.has(playerName)) {
-                firstTeamPlayers.set(playerName, steamIdToSteamId64(steamId));
-            } else if (side === secondTeamSide && secondTeamPlayers.size < 5 && !secondTeamPlayers.has(playerName)) {
-                secondTeamPlayers.set(playerName, steamIdToSteamId64(steamId));
+            const playerNameTrimmed = playerName.trim();
+            if (side === firstTeamSide && firstTeamPlayers.size < 5 && !firstTeamPlayers.has(playerNameTrimmed)) {
+                firstTeamPlayers.set(playerNameTrimmed, steamIdToSteamId64(steamId));
+            } else if (side === secondTeamSide && secondTeamPlayers.size < 5 && !secondTeamPlayers.has(playerNameTrimmed)) {
+                secondTeamPlayers.set(playerNameTrimmed, steamIdToSteamId64(steamId));
             }
         }
         if (firstTeamPlayers.size === 5 && secondTeamPlayers.size === 5) {
