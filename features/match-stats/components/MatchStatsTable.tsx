@@ -10,9 +10,10 @@ type TeamStats = {
 
 type Props = {
   teamStats: TeamStats;
+  damageLabel?: "ADR" | "DMG";
 } & TableHTMLAttributes<HTMLTableElement>;
 
-const MatchStatsTable: FC<Props> = ({ teamStats, className, ...tableProps }) => {
+const MatchStatsTable: FC<Props> = ({ teamStats, damageLabel = "ADR", className, ...tableProps }) => {
   return (
     <table
       className={twMerge("text-white text-sm border-collapse", className)}
@@ -29,7 +30,7 @@ const MatchStatsTable: FC<Props> = ({ teamStats, className, ...tableProps }) => 
           <th className="text-center px-2 py-2 w-10">K</th>
           <th className="text-center px-2 py-2 w-10">D</th>
           <th className="text-center px-2 py-2 w-10">+/-</th>
-          <th className="text-center px-2 py-2 w-12">ADR</th>
+          <th className="text-center px-2 py-2 w-12">{damageLabel}</th>
           <th className="text-center px-2 py-2 w-12">HS%</th>
         </tr>
       </thead>
