@@ -1,61 +1,54 @@
-import { PlayerBasicInfo, Team } from "../model";
-import { teamToLogFormatAccordingToFirstRound } from "./mappers";
+import { PlayerBasicInfo } from "../model";
+import { getSideTagsForBothTeams } from "./mappers";
 import { parseHardcodedFileToObjectList } from "./parseHardcodedFileToObjectList";
 
-export function parsePlayersFromTeam(team: Team): PlayerBasicInfo[] {
+export function parsePlayersFromBothTeams(): [PlayerBasicInfo[], PlayerBasicInfo[]] {
     const dataRaw = parseHardcodedFileToObjectList();
-    const sideTagInFirstRound = teamToLogFormatAccordingToFirstRound(team);
-    const playerNames = new Set<string>();
+    const [firstTeamSide, secondTeamSide] = getSideTagsForBothTeams();
+    const firstTeamPlayers = new Set<string>();
+    const secondTeamPlayers = new Set<string>();
 
     for (const event of dataRaw) {
         const playerMatch = event.data.match(/^"([^<"]+)<[^>]+><[^>]+><([^>]+)>/);
-        if (playerMatch && playerMatch[2] === sideTagInFirstRound) {
-            playerNames.add(playerMatch[1]);
+        if (playerMatch) {
+            const [, playerName, side] = playerMatch;
+            if (side === firstTeamSide && firstTeamPlayers.size < 5) {
+                firstTeamPlayers.add(playerName);
+            } else if (side === secondTeamSide && secondTeamPlayers.size < 5) {
+                secondTeamPlayers.add(playerName);
+            }
         }
-        // HACK
-        if (playerNames.size === 5) {
+        if (firstTeamPlayers.size === 5 && secondTeamPlayers.size === 5) {
             break;
         }
     }
 
-    return Array.from(playerNames).map(name => ({ name }));
+    return [
+        Array.from(firstTeamPlayers).map(name => ({ name })),
+        Array.from(secondTeamPlayers).map(name => ({ name })),
+    ];
 }
 
-
-export function parseTeamNameForTeam(team: Team): string {
+export function parseTeamNames(): [string, string] {
     const dataRaw = parseHardcodedFileToObjectList();
-    const firstTeamName = getFirstTeamName(dataRaw);
-    const secondTeamName = getSecondTeamName(dataRaw);
+    const teamNames: string[] = [];
 
-    if (team === "first") {
-        return firstTeamName;
-    }
-    return secondTeamName;
-}
-
-function getFirstTeamName(dataRaw: Array<{ data: string }>): string {
-    for (const event of dataRaw) {
-        const teamMatch = event.data.match(/^Team playing "([^"]+)": (.+)/);
-        if (teamMatch) {
-            return teamMatch[2].trim();
-        }
-    }
-    throw new Error("Could not find first team name");
-}
-
-function getSecondTeamName(dataRaw: Array<{ data: string }>): string {
-    const seenTeams = new Set<string>();
     for (const event of dataRaw) {
         const teamMatch = event.data.match(/^Team playing "([^"]+)": (.+)/);
         if (teamMatch) {
             const teamName = teamMatch[2].trim();
-            if (!seenTeams.has(teamName)) {
-                seenTeams.add(teamName);
-                if (seenTeams.size === 2) {
-                    return teamName;
+            if (!teamNames.includes(teamName)) {
+                teamNames.push(teamName);
+                if (teamNames.length === 2) {
+                    break;
                 }
             }
         }
     }
-    throw new Error("Could not find second team name");
+
+    if (teamNames.length < 2) {
+        throw new Error("Could not find both team names");
+    }
+
+    return [teamNames[0], teamNames[1]];
 }

@@ -1,12 +1,11 @@
 import "server-only";
 
-import { parseHardcodedFileToObjectList, parseTeamNameForTeam } from "@/shared/match-data-file-parser";
+import { parseHardcodedFileToObjectList, parseTeamNames } from "@/shared/match-data-file-parser";
 import { TeamFinalScore } from "../types";
 
 export function parseFinalScore(): [TeamFinalScore, TeamFinalScore] {
+  const [firstTeamName, secondTeamName] = parseTeamNames();
   const events = parseHardcodedFileToObjectList();
-  const firstTeamName = parseTeamNameForTeam("first");
-  const secondTeamName = parseTeamNameForTeam("second");
 
   const scoresByTeamName = new Map<string, number>();
 

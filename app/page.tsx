@@ -1,12 +1,10 @@
 import { MatchStatsTable, parseMatchStats } from "@/features/match-stats";
-import { getTeamRoster, TeamRoster } from "@/features/roster";
+import { getTeamRosters, TeamRoster } from "@/features/roster";
 import { getFinalScore, ScorePanel } from "@/features/score";
 
 export default function Home() {
-  const firstTeam = getTeamRoster("first");
-  const secondTeam = getTeamRoster("second");
-  const firstTeamMatchStats = parseMatchStats("first");
-  const secondTeamMatchStats = parseMatchStats("second");
+  const [firstTeam, secondTeam] = getTeamRosters();
+  const [firstTeamMatchStats, secondTeamMatchStats] = parseMatchStats();
   const [firstTeamScore, secondTeamScore] = getFinalScore();
 
 

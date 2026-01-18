@@ -1,51 +1,30 @@
-import { Team } from "../model";
 import { parseHardcodedFileToObjectList } from "./parseHardcodedFileToObjectList";
 
-export function teamToLogFormatAccordingToFirstRound(team: Team): "CT" | "TERRORIST" {
+type Side = "CT" | "TERRORIST";
+
+export function getSideTagsForBothTeams(): [Side, Side] {
   const dataRaw = parseHardcodedFileToObjectList();
-
-  const firstTeamName = getFirstTeamName(dataRaw);
-  const secondTeamName = getSecondTeamName(dataRaw);
-  const targetTeamName = team === "first" ? firstTeamName : secondTeamName;
+  const teamSides = new Map<string, Side>();
 
   for (const event of dataRaw) {
     const teamMatch = event.data.match(/^Team playing "([^"]+)": (.+)/);
     if (teamMatch) {
-      const side = teamMatch[1] as "CT" | "TERRORIST";
+      const side = teamMatch[1] as Side;
       const teamName = teamMatch[2].trim();
 
-      if (teamName === targetTeamName) {
-        return side;
-      }
-    }
-  }
-
-  throw new Error(`Could not determine log format for team: ${team}`);
-}
-
-function getFirstTeamName(dataRaw: Array<{ data: string }>): string {
-  for (const event of dataRaw) {
-    const teamMatch = event.data.match(/^Team playing "([^"]+)": (.+)/);
-    if (teamMatch) {
-      return teamMatch[2].trim();
-    }
-  }
-  throw new Error("Could not find first team name");
-}
-
-function getSecondTeamName(dataRaw: Array<{ data: string }>): string {
-  const seenTeams = new Set<string>();
-  for (const event of dataRaw) {
-    const teamMatch = event.data.match(/^Team playing "([^"]+)": (.+)/);
-    if (teamMatch) {
-      const teamName = teamMatch[2].trim();
-      if (!seenTeams.has(teamName)) {
-        seenTeams.add(teamName);
-        if (seenTeams.size === 2) {
-          return teamName;
+      if (!teamSides.has(teamName)) {
+        teamSides.set(teamName, side);
+        if (teamSides.size === 2) {
+          break;
         }
       }
     }
   }
-  throw new Error("Could not find second team name");
+
+  if (teamSides.size < 2) {
+    throw new Error("Could not determine sides for both teams");
+  }
+
+  const sides = Array.from(teamSides.values());
+  return [sides[0], sides[1]];
 }

@@ -1,17 +1,15 @@
 import "server-only";
 
-import { parsePlayersFromTeam, parseTeamNameForTeam } from "@/shared/match-data-file-parser";
-import { Team } from "@/shared/model";
+import { parsePlayersFromBothTeams, parseTeamNames } from "@/shared/match-data-file-parser";
 import { parseMatchStatsForPlayers } from "./matchStatsParser";
 import { TeamMatchStats } from "../types";
 
-export function parseMatchStats(team: Team): TeamMatchStats {
-    const players = parsePlayersFromTeam(team);
-    const matchStats = parseMatchStatsForPlayers(players);
-    const teamName = parseTeamNameForTeam(team);
+export function parseMatchStats(): [TeamMatchStats, TeamMatchStats] {
+    const [firstTeamName, secondTeamName] = parseTeamNames();
+    const [firstTeamPlayers, secondTeamPlayers] = parsePlayersFromBothTeams();
 
-    return {
-        name: teamName,
-        players: matchStats,
-    };
+    return [
+        { name: firstTeamName, players: parseMatchStatsForPlayers(firstTeamPlayers) },
+        { name: secondTeamName, players: parseMatchStatsForPlayers(secondTeamPlayers) },
+    ];
 }
