@@ -2,9 +2,33 @@ import "server-only";
 
 import { parseMatchStatsPerRound } from "./matchStatsParser";
 import { PlayerStats, RoundStats, TeamMatchStats } from "../types";
+import { fetchPlayerCountries } from "@/shared/player-country";
 
-export function getMatchStatsPerRound(): RoundStats[] {
-    return parseMatchStatsPerRound();
+export async function getMatchStatsPerRound(): Promise<RoundStats[]> {
+    const rounds = parseMatchStatsPerRound();
+    if (rounds.length === 0) return rounds;
+
+    const allPlayers = rounds[0].firstTeamStats.players.concat(rounds[0].secondTeamStats.players);
+    const steamIds = allPlayers.map(p => p.steamId64);
+    const countryMap = await fetchPlayerCountries(steamIds);
+
+    return rounds.map(round => ({
+        ...round,
+        firstTeamStats: {
+            ...round.firstTeamStats,
+            players: round.firstTeamStats.players.map(p => ({
+                ...p,
+                countryCode: countryMap.get(p.steamId64) ?? null,
+            })),
+        },
+        secondTeamStats: {
+            ...round.secondTeamStats,
+            players: round.secondTeamStats.players.map(p => ({
+                ...p,
+                countryCode: countryMap.get(p.steamId64) ?? null,
+            })),
+        },
+    }));
 }
 
 
@@ -22,12 +46,28 @@ export function aggregateRoundStats(rounds: RoundStats[]): [TeamMatchStats, Team
     ];
 }
 
+interface PlayerAggregator {
+    steamId64: string;
+    countryCode: string | null;
+    kills: number;
+    deaths: number;
+    damage: number;
+    headshotKills: number;
+}
+
 function aggregatePlayerStats(roundsPlayers: PlayerStats[][]): PlayerStats[] {
-    const playerMap = new Map<string, { kills: number; deaths: number; damage: number; headshotKills: number }>();
+    const playerMap = new Map<string, PlayerAggregator>();
 
     for (const players of roundsPlayers) {
         for (const player of players) {
-            const existing = playerMap.get(player.name) ?? { kills: 0, deaths: 0, damage: 0, headshotKills: 0 };
+            const existing = playerMap.get(player.name) ?? {
+                steamId64: player.steamId64,
+                countryCode: player.countryCode,
+                kills: 0,
+                deaths: 0,
+                damage: 0,
+                headshotKills: 0,
+            };
             existing.kills += player.kills;
             existing.deaths += player.deaths;
             existing.damage += player.damage;
@@ -41,6 +81,8 @@ function aggregatePlayerStats(roundsPlayers: PlayerStats[][]): PlayerStats[] {
     const totalRounds = roundsPlayers.length;
     return Array.from(playerMap.entries()).map(([name, stats]) => ({
         name,
+        steamId64: stats.steamId64,
+        countryCode: stats.countryCode,
         kills: stats.kills,
         deaths: stats.deaths,
         kdDiff: stats.kills - stats.deaths,

@@ -1,6 +1,7 @@
-import { PlayerBasicInfo, Side } from "@/shared/model";
+import { Side } from "@/shared/model";
+import { PlayerCountryInfo } from "@/shared/player-country";
 
-export interface PlayerStats extends PlayerBasicInfo {
+export interface PlayerStats extends PlayerCountryInfo {
     kills: number;
     deaths: number;
     kdDiff: number;

@@ -1,21 +1,22 @@
 import { PlayerBasicInfo } from "../model";
 import { getSideTagsForBothTeams } from "./mappers";
 import { parseHardcodedFileToObjectList } from "./parseHardcodedFileToObjectList";
+import { steamIdToSteamId64 } from "./steamIdConverter";
 
 export function parsePlayersFromBothTeams(): [PlayerBasicInfo[], PlayerBasicInfo[]] {
     const dataRaw = parseHardcodedFileToObjectList();
     const [firstTeamSide, secondTeamSide] = getSideTagsForBothTeams();
-    const firstTeamPlayers = new Set<string>();
-    const secondTeamPlayers = new Set<string>();
+    const firstTeamPlayers = new Map<string, string>();
+    const secondTeamPlayers = new Map<string, string>();
 
     for (const event of dataRaw) {
-        const playerMatch = event.data.match(/^"([^<"]+)<[^>]+><[^>]+><([^>]+)>/);
+        const playerMatch = event.data.match(/^"([^<"]+)<[^>]+><([^>]+)><([^>]+)>/);
         if (playerMatch) {
-            const [, playerName, side] = playerMatch;
-            if (side === firstTeamSide && firstTeamPlayers.size < 5) {
-                firstTeamPlayers.add(playerName);
-            } else if (side === secondTeamSide && secondTeamPlayers.size < 5) {
-                secondTeamPlayers.add(playerName);
+            const [, playerName, steamId, side] = playerMatch;
+            if (side === firstTeamSide && firstTeamPlayers.size < 5 && !firstTeamPlayers.has(playerName)) {
+                firstTeamPlayers.set(playerName, steamIdToSteamId64(steamId));
+            } else if (side === secondTeamSide && secondTeamPlayers.size < 5 && !secondTeamPlayers.has(playerName)) {
+                secondTeamPlayers.set(playerName, steamIdToSteamId64(steamId));
             }
         }
         if (firstTeamPlayers.size === 5 && secondTeamPlayers.size === 5) {
@@ -24,8 +25,8 @@ export function parsePlayersFromBothTeams(): [PlayerBasicInfo[], PlayerBasicInfo
     }
 
     return [
-        Array.from(firstTeamPlayers).map(name => ({ name })),
-        Array.from(secondTeamPlayers).map(name => ({ name })),
+        Array.from(firstTeamPlayers.entries()).map(([name, steamId64]) => ({ name, steamId64 })),
+        Array.from(secondTeamPlayers.entries()).map(([name, steamId64]) => ({ name, steamId64 })),
     ];
 }
 

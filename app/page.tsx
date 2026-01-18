@@ -2,11 +2,13 @@ import { MatchStatsPanel, aggregateRoundStats, getMatchStatsPerRound } from "@/f
 import { getTeamRosters, TeamRoster } from "@/features/roster";
 import { getFinalScore, ScorePanel } from "@/features/score";
 import { FlexColumn, FlexRow } from "@/shared/components/layout";
+import { use } from "react";
 
 export default function Home() {
-  const [firstTeam, secondTeam] = getTeamRosters();
+  const [firstTeamRoster, secondTeamRoster] = use(getTeamRosters());
+  console.log(firstTeamRoster, secondTeamRoster);
   const [firstTeamScore, secondTeamScore] = getFinalScore();
-  const roundStats = getMatchStatsPerRound();
+  const roundStats = use(getMatchStatsPerRound());
   const fullMatchStats = aggregateRoundStats(roundStats);
 
   return (
@@ -19,8 +21,8 @@ export default function Home() {
           <FlexColumn className="p-4 border-[0.5px] border-white/10 rounded-sm">
             <h2 className="text-white text-lg font-bold mb-2">Team Roster</h2>
             <FlexRow className="flex-col md:flex-row justify-between gap-4">
-              <TeamRoster teamInfo={firstTeam} />
-              <TeamRoster teamInfo={secondTeam} />
+              <TeamRoster teamInfo={firstTeamRoster} />
+              <TeamRoster teamInfo={secondTeamRoster} />
             </FlexRow>
           </FlexColumn>
 

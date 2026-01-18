@@ -2,6 +2,7 @@ import Image from "next/image";
 import { FC, TableHTMLAttributes } from "react";
 import { twMerge } from "tailwind-merge";
 import { PlayerStats } from "../types";
+import { getFlagPath } from "@/shared/player-country/index.client";
 
 type TeamStats = {
   name: string;
@@ -38,19 +39,34 @@ const MatchStatsTable: FC<Props> = ({ teamStats, damageLabel = "ADR", className,
         {teamStats.players.map((player, index) => (
           <tr key={player.name} className={index % 2 === 0 ? "bg-white/5" : ""}>
             <td className="px-2 py-1.5">
-              <div className="flex items-center gap-1.5">
-                <div className="w-1 h-7 bg-amber-500 rounded-sm" />
-                <div className="w-8 h-8 relative shrink-0">
-                  <Image
-                    src="/player.png"
-                    alt={player.name}
-                    fill
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <div className="w-4 h-3 bg-white/20 rounded-sm shrink-0" />
-                <span className="font-medium truncate max-w-24">{player.name}</span>
-              </div>
+              {(() => {
+                const flagPath = getFlagPath(player.countryCode);
+                return (
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1 h-7 bg-amber-500 rounded-sm" />
+                    <div className="w-8 h-8 relative shrink-0">
+                      <Image
+                        src="/player.png"
+                        alt={player.name}
+                        fill
+                        className="rounded-full object-cover"
+                      />
+                    </div>
+                    {flagPath ? (
+                      <Image
+                        src={flagPath}
+                        alt={player.countryCode ?? ""}
+                        width={16}
+                        height={12}
+                        className="shrink-0"
+                      />
+                    ) : (
+                      <div className="w-4 h-3 bg-white/20 rounded-sm shrink-0" />
+                    )}
+                    <span className="font-medium truncate max-w-24">{player.name}</span>
+                  </div>
+                );
+              })()}
             </td>
             <td className="text-center px-2 py-1.5">{player.kills}</td>
             <td className="text-center px-2 py-1.5">{player.deaths}</td>

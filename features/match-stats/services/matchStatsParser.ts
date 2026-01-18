@@ -140,7 +140,8 @@ function buildTeamRoundStats(
         players: players.map(player => {
             const stats = accumulators.get(player.name)!;
             return {
-                name: player.name,
+                ...player,
+                countryCode: null,
                 kills: stats.kills,
                 deaths: stats.deaths,
                 kdDiff: stats.kills - stats.deaths,

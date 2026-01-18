@@ -1,6 +1,7 @@
-import { PlayerBasicInfo } from "@/shared/model";
+
+import { PlayerCountryInfo } from "@/shared/player-country";
 
 export interface TeamRoster {
     name: string;
-    players: PlayerBasicInfo[];
+    players: PlayerCountryInfo[];
 }
