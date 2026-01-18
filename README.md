@@ -4,7 +4,8 @@
 
 https://csgo-stats-five.vercel.app/
 
-Tiny web app that shows stats for a pre-recorded game between NaVi and Vitality.
+Tiny web app that shows stats for a pre-recorded CS:GO match between NaVi and
+Vitality.
 
 Everything in this app uses data from `NAVIvsVitaGF-Nuke.txt`
 
